@@ -1,0 +1,24 @@
+# $Id$
+# Maintainer : Aaron Griffin <aaron@archlinux.org>
+
+pkgname=convmv
+pkgver=2.0
+pkgrel=1
+pkgdesc="Tool for converting encodings on filesystems"
+license=('GPL2')
+arch=('any')
+url="http://j3e.de/linux/convmv/"
+depends=('perl')
+options=('!strip')
+source=("http://j3e.de/linux/convmv/$pkgname-$pkgver.tar.gz")
+sha256sums=('170cf675be1fca77868ff472e9340ca828b1463865a63d4f4b7b3bf4053db93f')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  make PREFIX=$pkgdir/usr install
+}
