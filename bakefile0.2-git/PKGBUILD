@@ -1,0 +1,68 @@
+# Contributor: Tim S. <stahta01@gmail.com>
+
+_basename=bakefile
+_basever=0.2
+_realname=${_basename}${_basever}
+pkgbase=${_realname}
+pkgname="${_realname}-git"
+provides=(
+  "${_realname}"
+)
+conflicts=(
+  "${_basename}"
+  "${_realname}"
+)
+pkgver=0.2.10.r1319.2a85082
+pkgrel=1
+pkgdesc="cross-platform, cross-compiler native makefiles and projects generator."
+arch=('any')
+license=('MIT')
+url="http://bakefile.org/"
+depends=(
+)
+makedepends=(
+  'gcc'
+  'git'
+  'python2'
+  'swig'
+)
+options=('!strip' 'staticlibs' 'buildflags')
+source=(
+  ${_basename}::"git+https://github.com/vslavik/bakefile.git#branch=legacy-0.2-branch"
+)
+
+sha256sums=(
+  'SKIP'
+)
+
+pkgver() {
+  cd ${srcdir}/${_basename}
+  local _version=$(head -n 34 src/version.py | grep 'BAKEFILE_VERSION'  | sed -e 's/.* //' | tr -d '"\n')
+  printf "%s.r%s.%s" "$_version" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "${srcdir}/${_basename}"
+
+  ./bootstrap
+}
+
+build() {
+
+  [[ -d "${srcdir}"/build-${CARCH} ]] && rm -rf "${srcdir}"/build-${CARCH}
+  mkdir -p "${srcdir}"/build-${CARCH} && cd "${srcdir}"/build-${CARCH}
+
+  ../${_basename}/configure \
+    --prefix=/usr
+
+  make #VERBOSE=1
+}
+
+package() {
+  cd "${srcdir}"/build-${CARCH}
+  make DESTDIR="${pkgdir}" install
+
+  # License files
+  cd "${srcdir}"/${_basename}
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgbase}/COPYING.txt"
+}
