@@ -9,7 +9,7 @@ url="https://rsync.samba.org"
 groups=('net-utils')
 license=('GPL3')
 depends=('perl')
-source=("https://download.samba.org/pub/rsync/$pkgname-$pkgver.tar.gz"
+source=("https://download.samba.org/pub/rsync/src/$pkgname-$pkgver.tar.gz"
         rsync-3.1.0-msys2.patch
         ssh-6-option.patch)
 sha256sums=('55cc554efec5fdaad70de921cd5a5eeb6c29a95524c715f3bbf849235b0800c0'
