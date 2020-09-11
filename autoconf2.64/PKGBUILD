@@ -1,0 +1,48 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+# Contributor: Ray Donnelly <mingw.android@gmail.com>
+
+_realname=autoconf
+pkgname=${_realname}2.64
+pkgver=2.64
+pkgrel=1
+pkgdesc="A GNU tool for automatically configuring source code"
+arch=('any')
+license=('GPL2' 'GPL3' 'custom')
+url="https://www.gnu.org/software/autoconf"
+provides=(${_realname})
+conflicts=(${_realname})
+groups=('base-devel')
+depends=('awk' 'm4' 'diffutils' 'bash' 'perl')
+# for test-suite
+makedepends=('gcc-fortran')
+install=autoconf.install
+source=(https://ftp.gnu.org/pub/gnu/${_realname}/${_realname}-${pkgver}.tar.xz{,.sig})
+sha256sums=('32d977213320b8ae76c71175305301197f2b0e04e72d70694bc3d3e2ae6c7248'
+            'SKIP')
+
+prepare() {
+  cd ${srcdir}/${_realname}-${pkgver}
+}
+
+build() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  make check
+}
+
+package() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  # license exception
+  install -Dm644 COPYING \
+    $pkgdir/usr/share/licenses/autoconf${pkgver}/COPYING
+
+  # conflict with bintuils
+  rm -f ${pkgdir}/usr/share/info/standards.info
+}
