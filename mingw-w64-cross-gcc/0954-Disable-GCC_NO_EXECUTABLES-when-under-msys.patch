@@ -1,0 +1,128 @@
+From c5680e6df01721fd9af101abc6b7087435d406ef Mon Sep 17 00:00:00 2001
+From: Tim Stahlhut <stahta01@gmail.com>
+Date: Mon, 10 Jan 2022 03:24:10 -0500
+Subject: Disable GCC_NO_EXECUTABLES when under msys
+
+---
+ libstdc++-v3/configure    | 25 ++++++++++++++++---------
+ libstdc++-v3/configure.ac |  7 +++++++
+ 2 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/libstdc++-v3/configure b/libstdc++-v3/configure
+index 766a0a8d504..3166fee39d3 100755
+--- a/libstdc++-v3/configure
++++ b/libstdc++-v3/configure
+@@ -3201,6 +3201,13 @@ if test "$build" != "$host"; then
+ 	  GLIBCXX_IS_NATIVE=true
+ 	fi
+ 	;;
++  case "$host","$target" in
++      x86_64-*-msys*,x86_64-*-mingw32*)
++      x86_64-*-msys*,i?86-*-mingw32*)
++      i686-*-msys*,x86_64-*-mingw32*)
++      i686-*-msys*,i?86-*-mingw32*)
++	  GLIBCXX_IS_NATIVE=true
++	;;
+ 
+       *)
+ 
+@@ -12061,7 +12068,7 @@ else
+   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
+   lt_status=$lt_dlunknown
+   cat > conftest.$ac_ext <<_LT_EOF
+-#line 12064 "configure"
++#line 12071 "configure"
+ #include "confdefs.h"
+ 
+ #if HAVE_DLFCN_H
+@@ -12167,7 +12174,7 @@ else
+   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
+   lt_status=$lt_dlunknown
+   cat > conftest.$ac_ext <<_LT_EOF
+-#line 12170 "configure"
++#line 12177 "configure"
+ #include "confdefs.h"
+ 
+ #if HAVE_DLFCN_H
+@@ -15859,7 +15866,7 @@ $as_echo "$glibcxx_cv_atomic_long_long" >&6; }
+   # Fake what AC_TRY_COMPILE does.
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 15862 "configure"
++#line 15869 "configure"
+ int main()
+ {
+   typedef bool atomic_type;
+@@ -15894,7 +15901,7 @@ $as_echo "$glibcxx_cv_atomic_bool" >&6; }
+     rm -f conftest*
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 15897 "configure"
++#line 15904 "configure"
+ int main()
+ {
+   typedef short atomic_type;
+@@ -15929,7 +15936,7 @@ $as_echo "$glibcxx_cv_atomic_short" >&6; }
+     rm -f conftest*
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 15932 "configure"
++#line 15939 "configure"
+ int main()
+ {
+   // NB: _Atomic_word not necessarily int.
+@@ -15965,7 +15972,7 @@ $as_echo "$glibcxx_cv_atomic_int" >&6; }
+     rm -f conftest*
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 15968 "configure"
++#line 15975 "configure"
+ int main()
+ {
+   typedef long long atomic_type;
+@@ -16118,7 +16125,7 @@ $as_echo "mutex" >&6; }
+   # unnecessary for this test.
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 16121 "configure"
++#line 16128 "configure"
+ int main()
+ {
+   _Decimal32 d1;
+@@ -16160,7 +16167,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+   # unnecessary for this test.
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 16163 "configure"
++#line 16170 "configure"
+ template<typename T1, typename T2>
+   struct same
+   { typedef T2 type; };
+@@ -16194,7 +16201,7 @@ $as_echo "$enable_int128" >&6; }
+     rm -f conftest*
+ 
+     cat > conftest.$ac_ext << EOF
+-#line 16197 "configure"
++#line 16204 "configure"
+ template<typename T1, typename T2>
+   struct same
+   { typedef T2 type; };
+diff --git a/libstdc++-v3/configure.ac b/libstdc++-v3/configure.ac
+index 07cf05b6856..d9b3689722f 100644
+--- a/libstdc++-v3/configure.ac
++++ b/libstdc++-v3/configure.ac
+@@ -49,6 +49,13 @@ if test "$build" != "$host"; then
+ 	  GLIBCXX_IS_NATIVE=true
+ 	fi
+ 	;;
++  case "$host","$target" in
++      x86_64-*-msys*,x86_64-*-mingw32*)
++      x86_64-*-msys*,i?86-*-mingw32*)
++      i686-*-msys*,x86_64-*-mingw32*)
++      i686-*-msys*,i?86-*-mingw32*)
++	  GLIBCXX_IS_NATIVE=true
++	;;
+ 
+       *)
+ 	GCC_NO_EXECUTABLES
+-- 
