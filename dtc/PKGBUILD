@@ -2,7 +2,7 @@
 
 pkgname=dtc
 pkgver=1.7.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Device Tree Compiler"
 arch=('i686' 'x86_64')
 url="https://git.kernel.org/pub/scm/utils/dtc/dtc/git"
@@ -40,7 +40,7 @@ build() {
 
 check() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  $ PATH=$PWD/libfdt:$PATH/pylibfdt:$PATH make check || true
+  PATH=$PWD/libfdt:$PWD/pylibfdt:$PATH make check || true
 }
 
 package() {
