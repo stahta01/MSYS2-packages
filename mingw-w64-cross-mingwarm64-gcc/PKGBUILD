@@ -7,7 +7,7 @@ _targetpkgs=("${_mingw_suff}-mingwarm64-${_realname}")
 pkgname=("${_targetpkgs[@]}")
 _realver=15.0.0
 pkgver=15.0.0dev
-pkgrel=0
+pkgrel=1
 pkgdesc="Cross GCC for the MinGW-w64"
 arch=('aarch64' 'i686' 'x86_64')
 url="https://gcc.gnu.org"
@@ -19,8 +19,8 @@ msys2_references=(
 groups=("${_mingw_suff}-toolchain" "${_mingw_suff}")
 depends=("zlib" "mpc" "isl" "libzstd")
 makedepends=("gcc" 'lndir' "gmp-devel" "mpc-devel" "zlib-devel" "isl-devel" 'autotools' 'gperf' 'libzstd-devel'
-             "${_mingw_suff}-mingwarm64-headers" # "${_mingw_suff}-mingwarm64-crt"
-             # "${_mingw_suff}-mingwarm64-windows-default-manifest" "${_mingw_suff}-mingwarm64-winpthreads"
+             "${_mingw_suff}-mingwarm64-headers"  "${_mingw_suff}-mingwarm64-crt"
+             "${_mingw_suff}-mingwarm64-windows-default-manifest" # "${_mingw_suff}-mingwarm64-winpthreads"
              "${_mingw_suff}-mingwarm64-binutils" "git")
 #checkdepends=('dejagnu')
 options=('!strip' 'staticlibs' '!emptydirs' '!buildflags')
@@ -153,7 +153,7 @@ _build() {
     --enable-version-specific-runtime-libs \
     --disable-isl-version-check \
     --enable-lto \
-    --enable-libgomp \
+    --disable-libgomp \
     --disable-libssp \
     --disable-multilib \
     --enable-checking=release \
@@ -170,14 +170,14 @@ _build() {
     CFLAGS="-O2 -pipe" \
     CXXFLAGS="-O2 -pipe"
 
-  make all-gcc
+  make all
 }
 
 _package() {
   _target=$1
   cd ${srcdir}/gcc-build-${_target}
-  make -j1 DESTDIR=${pkgdir} install-gcc
-  #mv ${pkgdir}/opt/lib/gcc/${_target}/libgcc*.dll ${pkgdir}/opt/lib/gcc/${_target}/${_realver}/
+  make -j1 DESTDIR=${pkgdir} install
+  mv ${pkgdir}/opt/lib/gcc/${_target}/libgcc*.dll ${pkgdir}/opt/lib/gcc/${_target}/${_realver}/
   for _f in ${pkgdir}/opt/bin/*.exe; do
     strip -s ${_f}
   done
@@ -198,10 +198,10 @@ build() {
 package_mingw-w64-cross-mingwarm64-gcc() {
   conflicts=("${_mingw_suff}-${_realname}<=14.2.0-1")
   depends+=(
-    #"${_mingw_suff}-mingwarm64-crt"
+    "${_mingw_suff}-mingwarm64-crt"
     "${_mingw_suff}-mingwarm64-headers"
     #"${_mingw_suff}-mingwarm64-winpthreads"
-    #"${_mingw_suff}-mingwarm64-windows-default-manifest"
+    "${_mingw_suff}-mingwarm64-windows-default-manifest"
     "${_mingw_suff}-mingwarm64-binutils"
   )
   _package "aarch64-w64-mingw32"
