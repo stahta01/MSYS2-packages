@@ -1,6 +1,9 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 # Contributor: Martell Malone <martellmalone@gmail.com>
 
+# 32 bit failed to build with msys2-runtime 3.2.0-14
+# 32 bit built okay with msys2-runtime-3.3 3.3.6-13
+
 _realname=binutils
 _mingw_suff=mingw-w64-cross
 _targetpkgs=("${_mingw_suff}-mingwarm64-${_realname}")
