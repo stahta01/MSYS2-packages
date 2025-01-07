@@ -1,6 +1,9 @@
 # Maintainer: Alexey Pavlov <Alexpux@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
+# 32 bit failed to build with msys2-runtime 3.2.0-14
+# 32 bit built okay with msys2-runtime-3.3 3.3.6-13
+
 pkgbase=python
 pkgname=('python' 'python-devel')
 pkgver=3.12.9
