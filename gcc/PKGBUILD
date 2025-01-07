@@ -2,7 +2,40 @@
 # Contributor: Martell Malone <martellmalone@gmail.com>
 # Contributor: Ray Donnelly <mingw.android@gmail.com>
 
-# toolchain build order: win32-api-headers->msys2-runtime->binutils->gcc->binutils->msys2-runtime
+# Initial build order:
+#   [install autotools_MSYS_packages]
+#   # Install packages needed
+#   pacman -S --needed binutils patch texinfo
+#   # It appears to be a path length or depth related build bug; the path of
+#   # C:\git_repos\MSYS2-packages\msys2-runtime-3.3 works.
+#   msys2-runtime-3.3           needed to build mingw-w64-cross-mingwarm64-binutils and python 
+#                               and it is easier to upgrade first and very hard to upgrade it later
+#   [Exit and Restart Msys2]
+#   [run save-selected-old-dlls.sh] needed to save old ISL DLL
+#   libtool                     Fixes DLLs having cyg prefixes in some cases
+#   gmp
+#   mpfr
+#   mpc
+#   isl                         needed by both cross and regular gcc and maybe binutils
+#   [run load-selected-old-dlls.sh]
+#   mingw-w64-cross-binutils    needed to build mingw-w64-cross-gcc     build with nocheck
+#   mingw-w64-cross-headers     needed to install mingw-w64-cross-gcc
+#   mingw-w64-cross-crt         needed to install mingw-w64-cross-gcc
+#   mingw-w64-cross-winpthreads needed to install mingw-w64-cross-gcc
+#   mingw-.-cross-.-manifest    needed to install mingw-w64-cross-gcc
+#   mingw-w64-cross-gcc       REDOing   needed to build msys2-w32api-headers
+#   mingw-w64-cross-zlib      REDO
+#   msys2-w32api-headers      ?REDO
+#   msys2-w32api-runtime      ?REDO
+#   binutils                  REDO                                           build with nocheck
+#   windows-default-manifest  ?REDO
+#   gcc                       REDO
+#   libtool                   ?REDO
+#   [ ls /usr/bin/cyg*.dll ]
+#   binutils                  REDO                                          build with nocheck
+#   [run cleanup-selected-old-dlls.sh]
+#   msys2-runtime-3.3         REDO  FAILED NEEDS cross-mingw64
+#   [Exit and Restart Msys2]
 
 pkgbase=gcc
 pkgname=('gcc' 'gcc-libs')
