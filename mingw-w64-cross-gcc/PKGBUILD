@@ -3,7 +3,8 @@
 _realname=gcc
 _mingw_suff=mingw-w64-cross
 pkgbase="${_mingw_suff}-${_realname}"
-_targetpkgs=("${_mingw_suff}-ucrt64-${_realname}" "${_mingw_suff}-mingw32-${_realname}" "${_mingw_suff}-mingw64-${_realname}")
+#_targetpkgs=("${_mingw_suff}-ucrt64-${_realname}" "${_mingw_suff}-mingw32-${_realname}" "${_mingw_suff}-mingw64-${_realname}")
+_targetpkgs=("${_mingw_suff}-mingw32-${_realname}")
 pkgname=("${_mingw_suff}-${_realname}" "${_targetpkgs[@]}")
 pkgver=14.2.0
 pkgrel=3
