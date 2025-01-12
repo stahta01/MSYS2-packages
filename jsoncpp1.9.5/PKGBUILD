@@ -1,0 +1,72 @@
+# Maintainer: Martell Malone <martellmalone@gmail.com>
+
+pkgbase="jsoncpp"
+pkgname=("${pkgbase}" "${pkgbase}-devel")
+pkgver=1.9.5
+pkgrel=2
+pkgdesc="A C++ library for interacting with JSON"
+arch=('i686' 'x86_64')
+url="https://github.com/open-source-parsers/jsoncpp"
+license=('MIT')
+depends=("gcc-libs")
+makedepends=("gcc"
+             "cmake"
+             "python")
+options=('staticlibs' '!strip' '!buildflags')
+source=(${pkgname}-${pkgver}.tar.gz::"https://github.com/open-source-parsers/jsoncpp/archive/${pkgver}.tar.gz")
+sha256sums=('f409856e5920c18d0c2fb85276e24ee607d2a09b5e7d5f0a371368903c275da2')
+
+build() {
+  declare -a extra_config
+  if check_option "debug" "n"; then
+    extra_config+=("-DCMAKE_BUILD_TYPE=Release")
+  else
+    extra_config+=("-DCMAKE_BUILD_TYPE=Debug")
+  fi
+
+  [[ -d "${srcdir}/build-${CARCH}-static" ]] && rm -rf "${srcdir}/build-${CARCH}-static"
+  mkdir -p "${srcdir}/build-${CARCH}-static" && cd "${srcdir}/build-${CARCH}-static"
+
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DJSONCPP_WITH_CMAKE_PACKAGE=ON \
+    -DBUILD_SHARED_LIBS=OFF \
+    ${extra_config} \
+    ../${pkgbase}-${pkgver}
+
+  make
+  make DESTDIR=${srcdir}/dest install
+
+  [[ -d "${srcdir}/build-${CARCH}-shared" ]] && rm -rf "${srcdir}/build-${CARCH}-shared"
+  mkdir -p "${srcdir}/build-${CARCH}-shared" && cd "${srcdir}/build-${CARCH}-shared"
+
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DJSONCPP_WITH_CMAKE_PACKAGE=ON \
+    -DBUILD_SHARED_LIBS=ON \
+    ${extra_config} \
+    ../${pkgbase}-${pkgver}
+
+  make
+  make DESTDIR=${srcdir}/dest install
+}
+
+package_jsoncpp() {
+  install=jsoncpp.install
+  groups=("libraries")
+  cd "${srcdir}/dest"
+  mkdir -p ${pkgdir}/usr/bin
+  cp usr/bin/*.dll ${pkgdir}/usr/bin/
+}
+
+package_jsoncpp-devel() {
+  pkgdesc="Development headers and library for JsonCpp"
+  depends=("$pkgbase=$pkgver")
+  options=('staticlibs')
+  groups=("development")
+  cd "${srcdir}/dest"
+  mkdir -p ${pkgdir}/usr/lib
+  mkdir -p ${pkgdir}/usr/include
+  cp -rf usr/lib/* ${pkgdir}/usr/lib
+  cp -rf usr/include/* ${pkgdir}/usr/include
+}
