@@ -12,6 +12,7 @@ mkdir -p ./various_lib_depend_MSYS_32bit_packages
 
 rm -f ./various_lib_depend_MSYS_32bit_packages/*-i686.pkg.tar.zst
 
+cp --preserve=timestamps -f ../pcre2/*-i686.pkg.tar.zst ./various_lib_depend_MSYS_32bit_packages/
 cp --preserve=timestamps -f ../db/*-i686.pkg.tar.zst ./various_lib_depend_MSYS_32bit_packages/
 cp --preserve=timestamps -f ../heimdal/*-i686.pkg.tar.zst ./various_lib_depend_MSYS_32bit_packages/
 cp --preserve=timestamps -f ../readline/*-i686.pkg.tar.zst ./various_lib_depend_MSYS_32bit_packages/
