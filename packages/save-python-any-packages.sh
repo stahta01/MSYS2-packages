@@ -15,5 +15,9 @@ if which pacman ; then
   cp --preserve=timestamps /var/cache/pacman/pkg/python-*-any.pkg.tar.zst.sig ./python_MSYS_packages/
   cp --preserve=timestamps /var/cache/pacman/pkg/meson-*-any.pkg.tar.zst ./python_MSYS_packages/
   cp --preserve=timestamps /var/cache/pacman/pkg/meson-*-any.pkg.tar.zst.sig ./python_MSYS_packages/
+  cp --preserve=timestamps /var/cache/pacman/pkg/asciidoc-*-any.pkg.tar.zst ./python_MSYS_packages/
+  cp --preserve=timestamps /var/cache/pacman/pkg/asciidoc-*-any.pkg.tar.zst.sig ./python_MSYS_packages/
 
+  rm ./python_MSYS_packages/python-lxml-*-any.pkg.tar.zst
+  rm ./python_MSYS_packages/python-lxml-*-any.pkg.tar.zst.sig
 fi
