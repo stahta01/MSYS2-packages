@@ -2,7 +2,7 @@
 
 pkgname=('libarchive' 'libarchive-devel' 'bsdcpio' 'bsdtar')
 pkgver=3.7.7
-pkgrel=1
+pkgrel=0
 pkgdesc="Multi-format archive and compression library"
 arch=('i686' 'x86_64')
 url="https://libarchive.org/"
@@ -40,6 +40,7 @@ build() {
     --without-xml2 \
     --without-lzo2 \
     --without-nettle \
+    --without-zstd \
     --with-openssl \
     --without-cng
 
