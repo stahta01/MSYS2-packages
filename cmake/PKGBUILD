@@ -4,7 +4,7 @@
 _realname=cmake
 pkgname=("${_realname}" "${_realname}-emacs" "${_realname}-vim")
 pkgver=3.31.3
-pkgrel=1
+pkgrel=0
 pkgdesc="A cross-platform open-source make system"
 arch=('i686' 'x86_64')
 url="https://www.cmake.org/"
@@ -50,6 +50,10 @@ build() {
   [[ -d ${srcdir}/build-${CARCH} ]] && rm -rf ${srcdir}/build-${CARCH}
   mkdir -p ${srcdir}/build-${CARCH}
   cd ${srcdir}/build-${CARCH}
+
+  export CXXFLAGS+=" -fpermissive"
+  echo "CXXFLAGS := $CXXFLAGS"
+
   MSYSTEM=MSYS ${srcdir}/${_realname}-${pkgver}/configure \
     --prefix=/usr \
     --system-libs \
